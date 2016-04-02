@@ -508,8 +508,8 @@ function startTraining() {
 }
 
 function removeUselessWords(str, isEnglish) {
-    var s = str.replace("- ", "-").replace(" -", "-").replace('"', "'").replace("‘", "'").replace("’", "'").replace("»", "'").replace("«", "'").replace(",", " ").replace("/", " ");
-    s = s.replace("”", "'").replace("“", "'").replace("?", "").replace("!", "").replace(";", " ").replace(":", " ").replace("-", " ").replace(" '", "'").replace(".", "");
+    var s = str.replace("-", " ").replace('"', " ").replace("‘", " ").replace("’", " ").replace("»", " ").replace("«", " ").replace(",", " ").replace("/", " ");
+    s = s.replace("”", " ").replace("“", " ").replace("?", "").replace("!", "").replace(";", " ").replace(":", " ").replace("'", " ").replace(".", "");
     s = s.replace(" %", "%");
     // Remove every things inside parenthesis
     s = s.replace(/ *\([^)]*\) */g, "");
@@ -519,6 +519,7 @@ function removeUselessWords(str, isEnglish) {
         else if(s.startsWith("an ")){s=s.substring(3);}
         else if(s.startsWith("the ")){s=s.substring(4);}
         else if(s.startsWith("to ")){s=s.substring(3);}
+        s = s.replace("somebody", "sb");
     } else {
         if(s.startsWith("le ")){s=s.substring(3);}
         else if(s.startsWith("la ")){s=s.substring(3);}
@@ -526,7 +527,8 @@ function removeUselessWords(str, isEnglish) {
         else if(s.startsWith("un ")){s=s.substring(3);}
         else if(s.startsWith("une ")){s=s.substring(4);}
         else if(s.startsWith("des ")){s=s.substring(4);}
-        s = s.replace("l'", "");
+        s = s.replace("l ", "");
+        s = s.replace("quelqu un", "qqn");
     }
     
     return s.trim();
