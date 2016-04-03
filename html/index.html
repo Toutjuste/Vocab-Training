@@ -63,8 +63,8 @@
             </header>
             <div class="w3-padding">
                 <ul class="w3-ul w3-border w3-hoverable">
-                    <li id="cat_1" onclick="updateCat('cat_1')" class="w3-theme cat">Work <b>(Soon ...)</b></li>
-                    <li id="cat_2" onclick="updateCat('cat_2')" class="cat">Languages <b>(Soon ...)</b></li>
+                    <li id="cat_1" onclick="updateCat('cat_1')" class="w3-theme cat">Work</li>
+                    <li id="cat_2" onclick="updateCat('cat_2')" class="cat">Languages</li>
                     <li id="cat_3" onclick="updateCat('cat_3')" class="cat">Globalization</li>
                     <li id="cat_4" onclick="updateCat('cat_4')" class="cat">Education</li>
                     <li id="cat_5" onclick="updateCat('cat_5')" class="cat">Obesity</li>
@@ -511,15 +511,13 @@ function removeUselessWords(str, isEnglish) {
     var s = str.replace("-", " ").replace('"', " ").replace("‘", " ").replace("’", " ").replace("»", " ").replace("«", " ").replace(",", " ").replace("/", " ");
     s = s.replace("”", " ").replace("“", " ").replace("?", "").replace("!", "").replace(";", " ").replace(":", " ").replace("'", " ").replace(".", "");
     s = s.replace(" %", "%");
-    // Remove every things inside parenthesis
-    s = s.replace(/ *\([^)]*\) */g, "");
     
     if(isEnglish === true) {
         if(s.startsWith("a ")){s=s.substring(2);}
         else if(s.startsWith("an ")){s=s.substring(3);}
         else if(s.startsWith("the ")){s=s.substring(4);}
         else if(s.startsWith("to ")){s=s.substring(3);}
-        s = s.replace("somebody", "sb");
+        s = s.replace("somebody", "sb").replace("(gb)", "").replace("(us)", "");
     } else {
         if(s.startsWith("le ")){s=s.substring(3);}
         else if(s.startsWith("la ")){s=s.substring(3);}
@@ -532,6 +530,15 @@ function removeUselessWords(str, isEnglish) {
     }
     
     return s.trim();
+}
+    
+function removeParenthesis(str, inside) {
+    if (inside === true) {
+        // Remove everything inside parenthesis
+        return str.replace(/ *\([^)]*\) */g, "").trim();
+    } else {
+        return str.replace("(", "").replace(")", "").trim();
+    }
 }
 
 function processNextWord() {
@@ -559,6 +566,17 @@ function processNextWord() {
         trans = trans.toLowerCase();
         trans = removeUselessWords(trans, translateDirection[currentId] === 1);
         
+        // Check if the translation contains parenthesis
+        if (trans.indexOf("(") > -1) {
+            var trans2 = removeParenthesis(trans, true);
+            if(trans2 == input || trans2.score(input) >= 0.8) {
+                match = true;
+                break;
+            }
+            trans = removeParenthesis(trans, false);
+        }
+        
+        // Standard check (with words inside parenthesis)
         if(trans == input || trans.score(input) >= 0.8) {
             match = true;
             break;
