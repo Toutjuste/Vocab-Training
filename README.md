@@ -1,16 +1,17 @@
 Vocab' Training
 ===============
 
-Simple website for learning English vocabulary (English to French / French to English)
-Words lists are taken from this [book](http://www.amazon.fr/Vocabulaire-Th%C3%A9matique-Anglais-Fran%C3%A7ais-Monde-dAujourdhui/dp/2729827005) and this site follow the same chapters.
+Simple website for learning English vocabulary (English to French / French to English).
 
-Currently hosted at tjdev.fr/vocab
+Words lists are taken from this [book](http://www.amazon.fr/Vocabulaire-Th%C3%A9matique-Anglais-Fran%C3%A7ais-Monde-dAujourdhui/dp/2729827005).
+
+Currently hosted at [tjdev.fr/vocab](http://tjdev.fr/vocab)
 
 Project structure
 -----------------
 
-The tools/ directory contains a python script that concatenates 2 files (one with french words, on with english words) into a single ones.
-This project widely use Javascript, but also a bit of php for the concatenate.php file.
+The tools/ directory contains a python script that concatenates 2 files (one with french words, one with english words) into a single csv file.
+This project widely use Javascript, but also a bit of php in the concatenate.php file.
 
 License
 -------
