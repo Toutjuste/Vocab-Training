@@ -70,7 +70,7 @@
                     <li id="cat_5" onclick="updateCat('cat_5')" class="cat">Obesity</li>
                     <li id="cat_6" onclick="updateCat('cat_6')" class="cat">Information, Media, Internet</li>
                     <li id="cat_7" onclick="updateCat('cat_7')" class="cat">The Environment</li>
-                    <li id="cat_8" onclick="updateCat('cat_8')" class="cat">The Internet Giants <b>(Soon ...)</b></li>
+                    <li id="cat_8" onclick="updateCat('cat_8')" class="cat">The Environment (Part. 2)</li>
                     <li id="cat_9" onclick="updateCat('cat_9')" class="cat">Playing God <b>(Soon ...)</b></li>
                     <li id="cat_10" onclick="updateCat('cat_10')" class="cat">Innovation <b>(Soon ...)</b></li>
                 </ul>
@@ -517,7 +517,7 @@ function removeUselessWords(str, isEnglish) {
         else if(s.startsWith("an ")){s=s.substring(3);}
         else if(s.startsWith("the ")){s=s.substring(4);}
         else if(s.startsWith("to ")){s=s.substring(3);}
-        s = s.replace("somebody", "sb").replace("(gb)", "").replace("(us)", "");
+        s = s.replace("somebody", "sb").replace("something", "sth").replace("(gb)", "").replace("(us)", "");
     } else {
         if(s.startsWith("le ")){s=s.substring(3);}
         else if(s.startsWith("la ")){s=s.substring(3);}
@@ -525,8 +525,11 @@ function removeUselessWords(str, isEnglish) {
         else if(s.startsWith("un ")){s=s.substring(3);}
         else if(s.startsWith("une ")){s=s.substring(4);}
         else if(s.startsWith("des ")){s=s.substring(4);}
+        else if(s.startsWith("de ")){s=s.substring(3);}
+        else if(s.startsWith("du ")){s=s.substring(3);}
+        else if(s.startsWith("de la ")){s=s.substring(6);}
         s = s.replace("l ", "");
-        s = s.replace("quelqu un", "qqn");
+        s = s.replace("quelqu un", "qqn").replace("quelque chose", "qqch");
     }
     
     return s.trim();
