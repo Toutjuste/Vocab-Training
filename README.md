@@ -5,7 +5,7 @@ Simple website for learning English vocabulary (English to French / French to En
 
 Words lists are taken from this [book](http://www.amazon.fr/Vocabulaire-Th%C3%A9matique-Anglais-Fran%C3%A7ais-Monde-dAujourdhui/dp/2729827005).
 
-Currently hosted at [tjdev.fr/vocab](http://tjdev.fr/vocab)
+Currently hosted at [tranqyll.fr/vocab](http://tranqyll.fr/vocab)
 
 Project structure
 -----------------
