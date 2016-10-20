@@ -303,6 +303,11 @@ function shuffle(array) {
 String.prototype.capitalizeFirstLetter = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };
+    
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
 
 // percent must be an integer in range [0,100]
 function moveProgressBarTo(percent) {
@@ -520,7 +525,7 @@ function startTraining() {
             document.getElementById("trainingTranslateLabel").innerHTML = "Translation in <b>English</b>:";
         }
             
-        document.getElementById("trainingWord").innerHTML = currentWordsArray[0][translateDirection[0]].capitalizeFirstLetter().replace(";", ",");
+        document.getElementById("trainingWord").innerHTML = currentWordsArray[0][translateDirection[0]].capitalizeFirstLetter().replaceAll(";", ",");
         document.getElementById("trainingButtonNext").innerHTML = "Next (" + (currentId + 1) + "/" + currentWordsArray.length + ")";
         document.getElementById('trainingUserInput').value = "";
             
@@ -548,9 +553,9 @@ function startTraining() {
 }
 
 function removeUselessWords(str, isEnglish) {
-    var s = str.replace("-", " ").replace('"', " ").replace("‘", " ").replace("’", " ").replace("»", " ").replace("«", " ").replace(",", " ").replace("/", " ");
-    s = s.replace("”", " ").replace("“", " ").replace("?", "").replace("!", "").replace(";", " ").replace(":", " ").replace("'", " ").replace(".", "");
-    s = s.replace(" %", "%");
+    var s = str.replaceAll("-", " ").replaceAll('"', " ").replaceAll("‘", " ").replaceAll("’", " ").replaceAll("»", " ").replaceAll("«", " ").replaceAll(",", " ").replace("/", " ");
+    s = s.replaceAll("”", " ").replaceAll("“", " ").replaceAll("\\?", "").replaceAll("!", "").replaceAll(";", " ").replaceAll(":", " ").replaceAll("'", " ").replaceAll("\\.", "");
+    s = s.replaceAll(" %", "%");
     
     if(isEnglish === true) {
         if(s.startsWith("a ")){s=s.substring(2);}
@@ -568,7 +573,7 @@ function removeUselessWords(str, isEnglish) {
         else if(s.startsWith("de ")){s=s.substring(3);}
         else if(s.startsWith("du ")){s=s.substring(3);}
         else if(s.startsWith("de la ")){s=s.substring(6);}
-        s = s.replace("l ", "");
+        s = s.replaceAll("l ", "");
         s = s.replace("quelqu un", "qqn").replace("quelque chose", "qqch");
     }
     
@@ -640,7 +645,7 @@ function processNextWord() {
         } else {
             document.getElementById("trainingTranslateLabel").innerHTML = "Translation in <b>English</b>:";
         }
-        document.getElementById("trainingWord").innerHTML = currentWordsArray[currentId][translateDirection[currentId]].capitalizeFirstLetter().replace(";", ",");
+        document.getElementById("trainingWord").innerHTML = currentWordsArray[currentId][translateDirection[currentId]].capitalizeFirstLetter().replaceAll(";", ",");
         document.getElementById("trainingButtonNext").innerHTML = "Next (" + (currentId + 1) + "/" + currentWordsArray.length + ")";
         document.getElementById('trainingUserInput').value = "";
     } else {
@@ -668,9 +673,9 @@ function processNextWord() {
         
         for(i = 0; i < successMap.length; i++) {
             if(successMap[i]) {
-                results.innerHTML = results.innerHTML + '<tr class="w3-green"><td>' + currentWordsArray[i][0].capitalizeFirstLetter().replace(";", ",") + '</td><td>' + currentWordsArray[i][1].capitalizeFirstLetter() + '</td><td>' + userInputsHistory[i] + '</td></tr>';
+                results.innerHTML = results.innerHTML + '<tr class="w3-green"><td>' + currentWordsArray[i][0].capitalizeFirstLetter().replaceAll(";", ",") + '</td><td>' + currentWordsArray[i][1].capitalizeFirstLetter().replaceAll(";", ",") + '</td><td>' + userInputsHistory[i] + '</td></tr>';
             } else {
-                results.innerHTML = results.innerHTML + '<tr class="w3-red"><td>' + currentWordsArray[i][0].capitalizeFirstLetter().replace(";", ",") + '</td><td>' + currentWordsArray[i][1].capitalizeFirstLetter() + '</td><td>' + userInputsHistory[i] + '</td></tr>';
+                results.innerHTML = results.innerHTML + '<tr class="w3-red"><td>' + currentWordsArray[i][0].capitalizeFirstLetter().replaceAll(";", ",") + '</td><td>' + currentWordsArray[i][1].capitalizeFirstLetter().replaceAll(";", ",") + '</td><td>' + userInputsHistory[i] + '</td></tr>';
             }
         }
     }
