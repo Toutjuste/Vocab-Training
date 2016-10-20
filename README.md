@@ -11,7 +11,6 @@ Project structure
 -----------------
 
 The tools/ directory contains a python script that concatenates 2 files (one with french words, one with english words) into a single csv file.
-This project widely use Javascript, but also a bit of php in the concatenate.php file.
 
 License
 -------

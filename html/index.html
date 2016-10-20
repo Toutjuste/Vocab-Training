@@ -348,6 +348,27 @@ function getCSVList(url, onFinishedFunction) {
     });
 }
     
+// Return a concatanation of all subjects for a category
+function getAllSubjects(catId, onFinishedFunction) {
+    getCSVList("themes/" + catId + "/map.csv", function(data) {
+        var mainList = [];
+        var subCount = data.length;
+        var i = 0;
+        var handleSubRequest = function(subData) {
+            mainList = mainList.concat(subData);
+            i = i+1;
+            if(i >= subCount) {
+                // All subjects have been retrieved
+                onFinishedFunction(mainList);
+            } else {
+                getCSVList("themes/" + catId + "/" + data[i][0] + ".csv", handleSubRequest);
+            }
+        };
+        
+        getCSVList("themes/" + catId + "/" + data[i][0] + ".csv", handleSubRequest);
+    });
+}
+    
 /*
  * ----- Highlight the selected item -----
  */
@@ -453,17 +474,8 @@ var translateDirection = [];
 var currentId;
 
 function startTraining() {
-    var cat = selectedCat();
-    var sub = selectedSub();
-    
-    document.getElementById("trainingTitle").innerHTML = cat[1] + ": " + sub[1];
-    
-    var csvPath = "themes/" + cat[0] + "/" + sub[0] + ".csv";
-    if(sub[0] == "sub_all") {
-        csvPath = "concatenate.php?cat=" + cat[0];
-    }
-    
-    getCSVList(csvPath, function(data) {
+    // Called when the word list have been retrieved
+    var handleWordsList = function(data) {
         currentWordsArray = data;
             
         successMap = [];
@@ -521,7 +533,18 @@ function startTraining() {
         // Hide the modal
         document.getElementById('modalChooseSubject').style.display='none';
         document.getElementById('modalChooseTheme').style.display='none';
-    });
+    };
+    
+    var cat = selectedCat();
+    var sub = selectedSub();
+    
+    document.getElementById("trainingTitle").innerHTML = cat[1] + ": " + sub[1];
+    
+    if(sub[0] == "sub_all") {
+        getAllSubjects(cat[0], handleWordsList);
+    } else {
+        getCSVList("themes/" + cat[0] + "/" + sub[0] + ".csv", handleWordsList);
+    }
 }
 
 function removeUselessWords(str, isEnglish) {
