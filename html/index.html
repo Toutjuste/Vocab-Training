@@ -29,7 +29,7 @@
         <h1 class="w3-xxlarge">Vocab' training</h1>
         <div class="w3-padding-8">
             <button class="w3-btn w3-xlarge w3-theme-dark w3-hover-teal" 
-                    onclick="document.getElementById('modalChooseTheme').style.display='block'" 
+                    onclick="document.getElementById('modalChooseYear').style.display='block'" 
                     style="font-weight:900;">START ...</button>
         </div>
     </div>
@@ -52,8 +52,28 @@
             START !
         </span>
     </div>
+    
+    <!-- Modal used to choose a year -->
+    <div id="modalChooseYear" class="w3-modal">
+        <div class="w3-modal-content w3-card-8 w3-animate-top">
+            <header class="w3-container w3-theme"> 
+                <span onclick="document.getElementById('modalChooseYear').style.display='none'" class="w3-closebtn">&times;</span>
+                <h4>Choose your level ...</h4>
+            </header>
+            <div class="w3-padding">
+                <ul class="w3-ul w3-border w3-hoverable">
+                    <li id="year_1" onclick="updateList('year', 'year_1')" class="w3-theme year">1st Year</li>
+                    <li id="year_2" onclick="updateList('year', 'year_2')" class="year">2nd Year</li>
+                </ul>
+                <br>
+                <button class="w3-btn w3-theme-dark w3-hover-teal" 
+                        onclick="showThemes()" 
+                        style="font-weight:700;">Next</button>
+            </div>
+        </div>
+    </div>
 
-    <!-- Modal -->
+    <!-- Modal used to choose the theme -->
     <div id="modalChooseTheme" class="w3-modal">
         <div class="w3-modal-content w3-card-8 w3-animate-top">
             <header class="w3-container w3-theme"> 
@@ -61,17 +81,9 @@
                 <h4>Choose your theme ...</h4>
             </header>
             <div class="w3-padding">
-                <ul class="w3-ul w3-border w3-hoverable">
-                    <li id="cat_101" onclick="updateCat('cat_101')" class="w3-theme cat">Work</li>
-                    <li id="cat_102" onclick="updateCat('cat_102')" class="cat">Languages</li>
-                    <li id="cat_103" onclick="updateCat('cat_103')" class="cat">Globalization</li>
-                    <li id="cat_104" onclick="updateCat('cat_104')" class="cat">Education</li>
-                    <li id="cat_105" onclick="updateCat('cat_105')" class="cat">Obesity</li>
-                    <li id="cat_106" onclick="updateCat('cat_106')" class="cat">Information, Media, Internet</li>
-                    <li id="cat_107" onclick="updateCat('cat_107')" class="cat">The Environment</li>
-                    <li id="cat_108" onclick="updateCat('cat_108')" class="cat">The Environment (Part. 2)</li>
-                    <li id="cat_109" onclick="updateCat('cat_109')" class="cat">Playing God</li>
-                    <li id="cat_110" onclick="updateCat('cat_110')" class="cat">Innovation</li>
+                <ul id="modalThemeList" class="w3-ul w3-border w3-hoverable">
+                    <!-- Example item: -->
+                    <!-- <li id="cat_101" onclick="updateCat('cat_101')" class="w3-theme cat">Work</li> -->
                 </ul>
                 <br>
                 <button class="w3-btn w3-theme-dark w3-hover-teal" 
@@ -81,6 +93,7 @@
         </div>
     </div>
 
+    <!-- Modal used to choose the subject inside a theme -->
     <div id="modalChooseSubject" class="w3-modal">
         <div class="w3-modal-content w3-card-8 w3-animate-top">
             <header class="w3-container w3-theme"> 
@@ -90,10 +103,12 @@
             </header>
             <div class="w3-padding">
                 <!-- This list is filled by the showCatOptions() js function -->
-                <ul id="modalThemeList" class="w3-ul w3-border w3-hoverable">
+                <ul id="modalSubjectList" class="w3-ul w3-border w3-hoverable">
+                    <!-- Example item: -->
+                    <!-- <li id="sub_1" onclick="updateSub('sub_1')" class="sub">Subject Title</li> -->
                 </ul>
+                
                 <!-- Some options -->
-
                 <form class="w3-row w3-padding">
                     <div class="w3-third w3-padding">
                         <input id="radio_entofr" class="w3-radio" type="radio" name="transdir" checked
@@ -344,7 +359,7 @@ function getCSVList(url, onFinishedFunction) {
         complete: function(results, file) {
             // Papa parse appends an empty item at the end of the list
             // So, remove it
-            if(results.data[results.data.length-1][0] === "") {
+            while(results.data[results.data.length-1][0] === "") {
                 results.data.pop();
             }
             
@@ -378,69 +393,65 @@ function getAllSubjects(catId, onFinishedFunction) {
  * ----- Highlight the selected item -----
  */
 
-function updateCat(id) {
-    var el = document.getElementsByClassName("cat");
+function updateList(className, id) {
+    var el = document.getElementsByClassName(className);
     var i;
     for (i = 0; i < el.length; i++) {
-        el[i].className = "cat";
+        el[i].className = className;
     }
-    document.getElementById(id).className = "cat w3-theme";
-}
-
-function updateSub(id) {
-    var el = document.getElementsByClassName("sub");
-    var i;
-    for (i = 0; i < el.length; i++) {
-        el[i].className = "sub";
-    }
-    document.getElementById(id).className = "sub w3-theme";
-}
+    document.getElementById(id).className = className + " w3-theme";
+}    
     
 /*
  * ----- Categories / themes  -----
  */
-
+    
 // Return a list with: [id, text]
-function selectedCat() {
-    var catId = "";
-    var catText = "";
-    var el = document.getElementsByClassName("cat");
+function selectedItem(className) {
+    var id = "";
+    var text = "";
+    var el = document.getElementsByClassName(className);
     var i;
     for (i = 0; i < el.length; i++) {
         if (el[i].classList.contains("w3-theme")) {
-            catId = el[i].id;
-            catText = el[i].innerHTML;
+            id = el[i].id;
+            text = el[i].innerHTML;
             break;
         }
     }
-    return [catId, catText];
+    return [id, text];
 }
 
-// Return a list with: [id, text]
-function selectedSub() {
-    var subId = "";
-    var subText = "";
-    var el = document.getElementsByClassName("sub");
-    var i;
-    for (i = 0; i < el.length; i++) {
-        if (el[i].classList.contains("w3-theme")) {
-            subId = el[i].id;
-            subText = el[i].innerHTML;
-            break;
+function showThemes() {
+    var year = selectedItem("year");
+    
+    getCSVList("data/" + year[0] + ".csv", function(data) {
+        var themeList = document.getElementById("modalThemeList");
+        // Remove previous entries
+        while (themeList.hasChildNodes()) {   
+            themeList.removeChild(themeList.firstChild);
         }
-    }
-    return [subId, subText];
+        
+        //<li id="cat_101" onclick="updateCat('cat_101')" class="w3-theme cat">Work</li>
+        themeList.innerHTML = themeList.innerHTML + '<li id="' + data[0][0] + '" onclick="updateList(' + "'cat','" + data[0][0] + "'" + ')" class="w3-theme cat">' + data[0][1] + '</li>';
+        var i;
+        for(i = 1; i < data.length; i++) {
+            themeList.innerHTML = themeList.innerHTML + '<li id="' + data[i][0] + '" onclick="updateList(' + "'cat','" + data[i][0] + "'" + ')" class="cat">' + data[i][1] + '</li>';
+        }
+        
+        document.getElementById('modalChooseTheme').style.display = 'block';
+    });
 }
-
+    
 function showCatOptions() {
     // Search selected cat
-    var cat = selectedCat();
+    var cat = selectedItem("cat");
     document.getElementById("modalThemeTitle").innerHTML = cat[1];
     
     // Now parse the corresponding map file
     getCSVList("data/themes/" + cat[0].replace("cat_", "") + ".csv", function(data) {
-        var subList = document.getElementById("modalThemeList");
-        // Remove previous subject entries
+        var subList = document.getElementById("modalSubjectList");
+        // Remove previous entries
         while (subList.hasChildNodes()) {   
             subList.removeChild(subList.firstChild);
         }
@@ -448,17 +459,15 @@ function showCatOptions() {
         var i;
         for(i = 0; i < data.length; i++) {
             var sub = data[i];
-            if(sub[0] !== "") {
-                if(i === 0) {
-                    subList.innerHTML = subList.innerHTML + '<li id="' + sub[0] + '" onclick="updateSub(' + "'" + sub[0] + "'" + ')" class="w3-theme sub">' + sub[1] + '</li>';
-                } else {
-                    subList.innerHTML = subList.innerHTML + '<li id="' + sub[0] + '" onclick="updateSub(' + "'" + sub[0] + "'" + ')" class="sub" >' + sub[1] + '</li>';
-                }
+            if(i === 0) {
+                subList.innerHTML = subList.innerHTML + '<li id="' + sub[0] + '" onclick="updateList(' + "'sub','" + sub[0] + "'" + ')" class="w3-theme sub">' + sub[1] + '</li>';
+            } else {
+                subList.innerHTML = subList.innerHTML + '<li id="' + sub[0] + '" onclick="updateList(' + "'sub','" + sub[0] + "'" + ')" class="sub" >' + sub[1] + '</li>';
             }
         }
         
         // Add a "all" element
-        subList.innerHTML = subList.innerHTML + '<li id="sub_all" onclick="updateSub(' + "'sub_all'" + ')"  class="sub">All subjects !</li>';
+        subList.innerHTML = subList.innerHTML + '<li id="sub_all" onclick="updateList(' + "'sub','sub_all'" + ')"  class="sub">All subjects !</li>';
         
         // Show the modal
         document.getElementById('modalChooseSubject').style.display='block';
@@ -538,10 +547,11 @@ function startTraining() {
         // Hide the modal
         document.getElementById('modalChooseSubject').style.display='none';
         document.getElementById('modalChooseTheme').style.display='none';
+        document.getElementById('modalChooseYear').style.display='none';
     };
     
-    var cat = selectedCat();
-    var sub = selectedSub();
+    var cat = selectedItem("cat");
+    var sub = selectedItem("sub");
     
     document.getElementById("trainingTitle").innerHTML = cat[1] + ": " + sub[1];
     
