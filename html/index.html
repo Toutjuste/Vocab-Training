@@ -369,6 +369,7 @@ function getCSVList(url, onFinishedFunction) {
     Papa.parse(url, {
         download: true,
         delimiter: "=",
+        fastMode: true,
         complete: function(results, file) {
             // Papa parse appends an empty item at the end of the list
             // So, remove it
