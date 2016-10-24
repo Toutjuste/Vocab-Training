@@ -580,6 +580,7 @@ function removeUselessWords(str, isEnglish) {
     var s = str.replaceAll("-", " ").replaceAll('"', " ").replaceAll("‘", " ").replaceAll("’", " ").replaceAll("»", " ").replaceAll("«", " ").replaceAll(",", " ").replace("/", " ");
     s = s.replaceAll("”", " ").replaceAll("“", " ").replaceAll("\\?", "").replaceAll("!", "").replaceAll(";", " ").replaceAll(":", " ").replaceAll("'", " ").replaceAll("\\.", "");
     s = s.replaceAll(" %", "%");
+    s = s.replace("(usa)", "");
     
     if(isEnglish === true) {
         if(s.startsWith("a ")){s=s.substring(2);}
